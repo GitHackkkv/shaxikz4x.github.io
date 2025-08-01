@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shaxik FF - Топовые софты</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Orbitron', sans-serif;
+    }
+    body {
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Particle Background */
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: #111;
+    }
+
+    h1 {
+      font-size: 3.2em;
+      color: #ff0000;
+      text-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+      margin-bottom: 10px;
+      animation: pulse 2.5s infinite;
+      z-index: 1;
+    }
+    @keyframes pulse {
+      0%, 100% { text-shadow: 0 0 15px #ff0000; }
+      50% { text-shadow: 0 0 30px #ff0000; }
+    }
+
+    .about {
+      font-size: 1.2em;
+      color: #ccc;
+      margin-bottom: 30px;
+      max-width: 480px;
+      animation: fadeIn 2s ease;
+      z-index: 1;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    /* Фото с закругленными углами */
+    .profile-photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 24px;
+      object-fit: cover;
+      margin-bottom: 30px;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      z-index: 1;
+    }
+    .profile-photo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255, 0, 0, 1);
+    }
+
+    /* Кнопка открытия каталога */
+    .catalog-toggle {
+      margin: 20px auto 40px;
+      padding: 16px 45px;
+      background: linear-gradient(90deg, #ff1a1a, #ff6b6b);
+      border: 2px solid #ff4444;
+      border-radius: 50px;
+      font-size: 1.4em;
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255, 68, 68, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      user-select: none;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .catalog-toggle::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: 0.5s;
+      z-index: -1;
+    }
+    .catalog-toggle:hover::before {
+      left: 100%;
+    }
+    .catalog-toggle:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 0 30px rgba(255, 68, 68, 1), inset 0 0 15px rgba(255, 255, 255, 0.3);
+      background: linear-gradient(90deg, #ff0000, #ff4d4d);
+    }
+    .catalog-toggle:active {
+      transform: translateY(-2px) scale(0.98);
+      box-shadow: 0 0 15px rgba(255, 68, 68, 0.7);
+    }
+
+    /* Каталог товаров */
+    .catalog {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto 50px;
+      display: none;
+      animation: fadeInUp 0.5s forwards;
+      text-align: left;
+      z-index: 1;
+    }
+    .catalog.active {
+      display: block;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .product {
+      background: #1a0000;
+      border-radius: 20px;
+      padding: 25px 30px;
+      margin-bottom: 25px;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+      transition: box-shadow 0.3s ease;
+    }
+    .product:hover {
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+    }
+    .product h2 {
+      font-size: 1.9em;
+      margin-bottom: 8px;
+      color: #ff4444;
+      letter-spacing: 1.1px;
+    }
+    .product p {
+      font-size: 1.1em;
+      color: #ddd;
+      line-height: 1.4;
+    }
+
+    /* Ссылки внизу */
+    .links {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+      z-index: 1;
+    }
+    .links a {
+      display: inline-block;
+      padding: 14px 38px;
+      border: 2px solid #ff4444;
+      border-radius: 40px;
+      background: linear-gradient(135deg, #ff1a1a, #800000);
+      color: white;
+      font-weight: 700;
+      font-size: 1.1em;
+      text-decoration: none;
+      box-shadow: 0 0 15px rgba(255, 59, 59, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      user-select: none;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+    }
+    .links a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: 0.5s;
+      z-index: -1;
+    }
+    .links a:hover::before {
+      left: 100%;
+    }
+    .links a:hover {
+      background: linear-gradient(135deg, #ff0000, #b30000);
+      box-shadow: 0 0 25px rgba(255, 26, 26, 1), inset 0 0 15px rgba(255, 255, 255, 0.3);
+      transform: translateY(-4px) scale(1.07);
+      border-color: #ff1a1a;
+    }
+    .links a:active {
+      transform: translateY(-2px) scale(0.95);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particle Background Container -->
+  <div id="particles-js"></div>
+
+  <h1>Shaxik FF</h1>
+
+  <img src="https://i.ibb.co/fVHd65SP/1.png" alt="Фото Shaxik" class="profile-photo" />
+
+  <div class="about">
+    Создаю ахуеные софты на IOS.
+Все для твоего кайфа наху!
+  </div>
+
+  <button class="catalog-toggle" id="catalog-toggle">Показать каталог товаров</button>
+
+  <div class="catalog" id="catalog">
+    <div class="product">
+      <h2>Soft iOS</h2>
+      <p>👻Софт на iPhone. Поддерживает на все версии IOS. Цена: 800₽/10$ ✅ Чтобы купить, пишите в Telegram. Нажмите на кнопку «Связь со мной» ниже 👇🏻</p>
+    </div>
+    <div class="product">
+      <h2>Panel PC</h2>
+      <p>👑Панелька на пк. Разные виды панельки на ваш вкус, цена на них разная.✅Чтобы купить, пишите в Telegram. Нажмите на кнопку «Связь со мной» ниже 👇🏻</p>
+    </div>
+  </div>
+
+  <div class="links">
+    <a href="https://t.me/s7evx" target="_blank" rel="noopener noreferrer">Связь со мной</a>
+    <a href="https://t.me/shaxiktt" target="_blank" rel="noopener noreferrer">Telegram канал</a>
+    <a href="https://youtube.com/@shaxikff?si=DTvZO4J-ySaimDu4" target="_blank" rel="noopener noreferrer">YouTube канал</a>
+  </div>
+
+  <script>
+    // Catalog Toggle Script
+    const toggleBtn = document.getElementById('catalog-toggle');
+    const catalog = document.getElementById('catalog');
+
+    toggleBtn.addEventListener('click', () => {
+      catalog.classList.toggle('active');
+      toggleBtn.textContent = catalog.classList.contains('active') 
+        ? 'Скрыть каталог товаров' 
+        : 'Показать каталог товаров';
+    });
+  </script>
+
+  <!-- Particles.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: '#ff4444' },
+        shape: { type: 'circle', stroke: { width: 0, color: '#000000' } },
+        opacity: { value: 0.5, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } },
+        size: { value: 3, random: true, anim: { enable: true, speed: 2, size_min: 0.1, sync: false } },
+        line_linked: { enable: true, distance: 150, color: '#ff4444', opacity: 0.4, width: 1 },
+        move: { enable: true, speed: 3, direction: 'none', random: true, straight: false, out_mode: 'out', bounce: false }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
+        modes: { grab: { distance: 200, line_linked: { opacity: 0.5 } }, push: { particles_nb: 4 } }
+      },
+      retina_detect: true
+    });
+  </script>
+
+</body>
+</html>
